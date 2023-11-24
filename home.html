@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee details page</title>    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="assets/home.css">
+</head>
+<body >
+
+    <!--=============================== TOP RIBBON STARTS HERE======================================================= -->
+    <div class="top-ribbon">
+        <div class="top-ribbon-text">Emp App</div>    
+            <div class="user-info">
+          <span class="user-info-text">Admin-user</span>
+        <i class="fas fa-user-circle user-profile-icon" id="profile-icon"></i> 
+        </div>       
+      </div>
+
+    <div class="sidebar">
+        <nav>
+            <ul>
+                <li class="active"><a href="/home" id="employee-registration-link"><i class="fas fa-pencil-alt" style="width: 30px;"></i>Employee Registration</a></li>
+                <li><a href="/logout"><i class="fas fa-sign-out-alt" style="width: 30px;"></i>Logout</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <main>
+        <header>
+            <!-- Header content goes here -->
+        </header>
+
+        <div class="button-and-filter-container">
+        <button id="add-employee-button" class="add-button"> Add Employee <i class="fas fa-plus"></i></button>
+        <div class="filter-section">
+            <label for="filter-input">Filter by: </label>
+            <input type="text" id="filter-input" placeholder="Enter Name,Country,Emp ID...">
+            <button id="apply-filter" class="purple-button">Apply</button>
+            <button id="clear-filter" class="purple-button">Clear</button>
+        </div>
+    </div>
+         <section class="content">                       
+            <h2>Employee List</h2>
+            <div id="employee-details-table">
+                <!-- Writer details table will be populated here -->
+            </div>
+            <div id="pagination" class="center-pagination">
+                <button id="prev-page">Previous</button>
+                <button id="next-page">Next</button>
+            </div>
+
+<!--------------------------------------------------- edit writer details form starts here ---------------------------------------------------------->
+
+        <div id="editModal" class="editModal">
+            <div class="edit-modal-content">
+                <span class="close">&times;</span> 
+                <h2>Edit Employee</h2>                    
+                <form id="editEmployeeForm" class="two-column-form" >
+
+                    <input type="hidden" id="employee_id" name="employee_id" value="">
+
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label for="employeeName" class="required-field">Employee Name</label>
+                            <input type="text" id="employeeName" name="employeeName" required>
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="id" class="required-field">ID</label>
+                            <input type="text" id="id" name="id" required>
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="fatherName" class="required-field">Father's Name</label>
+                            <input type="text" id="fatherName" name="fatherName" required>
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="salary" class="required-field">Salary</label>
+                            <input type="number" id="salary" name="salary" required>
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="dob" class="required-field">Date of Birth</label>
+                            <input type="date" id="dob" name="dob" required>
+                        </div>
+        
+                    </div>
+                    <div class="form-column">
+
+                        <div class="form-group">
+                            <label for="gender" class="required-field">Gender</label>
+                            <select id="gender" name="gender" required>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="languages" class="required-field">Languages</label>
+                            <div>
+                                <label>
+                                    Tamil
+                                    <input type="checkbox" value="tamil" name="languages">
+                                </label>
+                                <label>
+                                    English
+                                    <input type="checkbox" value="english" name="languages">
+                                </label>
+                                <label>
+                                    Spanish
+                                    <input type="checkbox" value="spanish" name="languages">
+                                </label>
+                            </div>
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="country" class="required-field">Country</label>
+                            <select id="country" name="country" required>
+                                <option value="india">INDIA</option>
+                                <option value="russia">RUSSIA</option>
+                                <option value="japan">JAPAN</option>
+                                <option value="usa">USA</option>
+                                <option value="uk">UK</option>
+                            </select>
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="profileUpload" class="required-field">Profile Upload</label>
+                            <input type="file" id="profileUpload" name="profileUpload">
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="resumeUpload" class="required-field">Resume Upload</label>
+                            <input type="file" id="resumeUpload" name="resumeUpload">
+                        </div>
+        
+                    </div>
+                    <input type="submit" class="btn" value="Save Changes">
+                  </form>           
+                
+            </div>
+        </div>
+        
+        
+<!------------------------------------------------ writer registration form starts here ---------------------------------------------------->
+        
+<div id="addModal" class="addModal">
+    <div class="add-modal-content">
+        <span class="close1">&times;</span>
+        <h2>Employee Registration</h2>
+        <form id="employee-registration-form" class="two-column-form">
+
+            <div class="form-column">
+                <div class="form-group">
+                    <label for="employeeName" class="required-field">Employee Name</label>
+                    <input type="text" id="add-employeeName" name="employeeName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="id" class="required-field">ID</label>
+                    <input type="text" id="add-id" name="id" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="fatherName" class="required-field">Father's Name</label>
+                    <input type="text" id="add-fatherName" name="fatherName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="salary" class="required-field">Salary</label>
+                    <input type="number" id="add-salary" name="salary" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="dob" class="required-field">Date of Birth</label>
+                    <input type="date" id="add-dob" name="dob" required>
+                </div>
+
+            </div>
+
+            <div class="form-column">
+
+                <div class="form-group">
+                    <label for="gender" class="required-field">Gender</label>
+                    <select id="add-gender" name="gender" required>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="languages" class="required-field">Languages</label>
+                    <div>
+                        <label>
+                            Tamil
+                            <input type="checkbox" value="tamil" name="languages">
+                        </label>
+                        <label>
+                            English
+                            <input type="checkbox" value="english" name="languages">
+                        </label>
+                        <label>
+                            Spanish
+                            <input type="checkbox" value="spanish" name="languages">
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="country" class="required-field">Country</label>
+                    <select id="add-country" name="country" required>
+                        <option value="india">INDIA</option>
+                        <option value="russia">RUSSIA</option>
+                        <option value="japan">JAPAN</option>
+                        <option value="usa">USA</option>
+                        <option value="uk">UK</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="profileUpload" class="required-field">Profile Upload</label>
+                    <input type="file" id="add-profileUpload" name="profileUpload">
+                </div>
+
+                <div class="form-group">
+                    <label for="resumeUpload" class="required-field">Resume Upload</label>
+                    <input type="file" id="add-resumeUpload" name="resumeUpload">
+                </div>
+
+            </div>
+            <input type="submit" class="btn" value="Submit">
+
+        </form>
+    </div>
+</div>
+            
+            
+        </section>
+    </main>
+
+    
+    <footer>
+        <p>&copy; 2023 MOI APP</p>
+    </footer>
+
+    </body>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get references to the content area and the "Customer Registration" link
+        const content = document.getElementById("employee-details-table");
+        const writerRegistrationLink = document.getElementById("employee-registration-link");
+        const paginationContainer = document.getElementById("pagination");
+        // Get the modal element
+        const eyeIcons = [];
+        const editIcons = [];
+        const deleteIcons = [];
+        const editWriterForm = document.getElementById("editWriterForm");
+        const closeBtn = document.querySelector(".close");
+        const dobElement = document.getElementById("dob");
+
+        let currentPage = 1;
+
+//-------------------------------------- Function to create an eye icon --------------------------------------------------
+        function createEyeIcon() {
+                const eyeIcon = document.createElement("i");
+                eyeIcon.classList.add("fas", "fa-eye");
+                eyeIcon.title = "View";
+                console.log("Eye icon created");
+                return eyeIcon;
+            }
+
+//-------------------------------------- Function to create an edit icon --------------------------------------------------
+        function createEditIcon() {
+                const editIcon = document.createElement("i");
+                editIcon.classList.add("fas", "fa-edit"); 
+                editIcon.title = "Edit"; 
+                //console.log("Edit icon created"); 
+                return editIcon;
+            }
+
+//------------------------------------- Function to create a delete icon -----------------------------------------------
+        function createDeleteIcon() {
+                const deleteIcon = document.createElement("i");
+                deleteIcon.classList.add("fas", "fa-trash"); 
+                deleteIcon.title = "Delete"; 
+                return deleteIcon;
+            }
+
+// ================================================================================================================================================
+
+//------------------------------------- Filter functionality starts here -----------------------------------------------
+
+            const filterInput = document.getElementById("filter-input");
+            const applyFilterButton = document.getElementById("apply-filter");
+            const clearFilterButton = document.getElementById("clear-filter");
+            let filteredData = [];
+
+        applyFilterButton.addEventListener("click", function () {
+        const filterCriteria = filterInput.value.trim();
+        
+        if (filterCriteria === "") {
+            alert("Please enter a valid filter criteria.");
+            return; 
+        }
+
+        applyFilter(filterCriteria);
+        });
+
+            // Add event listener for the "Clear Filter" button
+        clearFilterButton.addEventListener("click", function () {
+            // Clear the filter input fields
+            filterInput.value = "";
+            
+            clearFilter();
+            //fetchAndDisplayWriterDetails();
+        });
+
+
+            // Function to apply the filter
+    function applyFilter(filterCriteria) {
+        // Fetch the writer data and filter based on phone and email
+        fetch("/get-employee-details")
+            .then(response => response.json())
+            .then(data => {
+                const filteredData = data.filter(employee => {                   
+                    
+                    const employeeName = employee.employeeName.toLowerCase();
+                    const employeeFatherName = employee.fatherName.toLowerCase();
+                    const employeeId = employee.id.toLowerCase();
+                    const employeeCountry = employee.country.toLowerCase();
+                    
+                    // Check if the writer's phone or email matches the filter criteria
+                    return (
+                        employeeName.includes(filterCriteria.toLowerCase()) ||
+                        employeeFatherName.includes(filterCriteria.toLowerCase()) ||
+                        employeeId.includes(filterCriteria.toLowerCase()) ||
+                        employeeCountry.includes(filterCriteria.toLowerCase()) 
+                        );                        
+                });
+
+                console.log(filteredData);
+
+                currentPage = 1;
+                displayFilteredWriterDetails(filteredData);
+            })
+            .catch(error => {
+                console.error("Error fetching Writer details:", error);
+            });
+    }
+
+
+    // Function to display filtered writer details
+    function displayFilteredWriterDetails(filteredData) {
+        console.log("displayFilteredWriterDetails called");
+        const content = document.getElementById("employee-details-table");
+
+        console.log(filteredData.length);
+
+            // Clear the content area
+            content.innerHTML = "";
+
+            const rowsPerPage = 7;
+            totalPages = Math.ceil(filteredData.length / rowsPerPage);
+            console.log(totalPages);
+
+            // Update the pagination controls
+            paginationContainer.innerHTML = `
+            <button id="prev-page" ${currentPage === 1 ? 'disabled' : ''}>Previous</button>
+            <span>Page ${currentPage} of ${totalPages}</span>
+            <button id="next-page" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>
+            `;
+
+            const table = document.createElement("table");
+            table.classList.add("employee-table");
+
+            // Create table headers
+            const headers = ["SI No", "Name", "Employee ID", "Father's Name", "DOB", "Gender", "Salary", "Country", "Actions"];
+            const headerRow = document.createElement("tr");
+            headers.forEach(headerText => {
+                const headerCell = document.createElement("th");
+                headerCell.textContent = headerText;
+                headerRow.appendChild(headerCell);
+            });
+            table.appendChild(headerRow);
+
+            // Create a container for the header
+            const headerContainer = document.createElement("div");
+            headerContainer.classList.add("header-container");
+            headerContainer.appendChild(table);
+
+            const rowContainer = document.createElement("div");
+            rowContainer.classList.add("row-container");
+
+            const startIndex = (currentPage - 1) * rowsPerPage;
+            const endIndex = startIndex + rowsPerPage;
+
+            let serialNumber = startIndex + 1 ;
+
+            const pageData = filteredData.slice(startIndex, endIndex);
+
+            console.log("pageData", pageData);
+            // Iterate through filtered data and create containers for each row
+            pageData.forEach(employee => {
+                // console.log(writer);
+
+                const row = document.createElement("tr");
+                const siNoCell = document.createElement("td");
+                siNoCell.textContent = serialNumber++;
+                row.appendChild(siNoCell);
+
+                const dob = new Date(employee.dob);
+                const year = dob.getFullYear();
+                const month = (dob.getMonth() + 1).toString().padStart(2, '0');
+                const day = dob.getDate().toString().padStart(2, '0');
+                const formattedDob = `${year}-${month}-${day}`;
+
+                    const nameCell = document.createElement("td");
+                    const nameLink = document.createElement("a");
+                    nameLink.href = `writer_details.html?id=${employee._id}`; 
+                    nameLink.style.textDecoration = "none";
+                    nameLink.textContent = employee.employeeName;
+                    
+                    nameCell.appendChild(nameLink);
+                    row.appendChild(nameCell);
+
+                    nameLink.addEventListener("click", (e) => {
+                        e.preventDefault(); // Prevent the default link behavior
+                        // Navigate to the writer_details page with the specific writer's data
+                        window.location.href = nameLink.href;
+                    });
+
+                const cells = [
+                            employee.id,
+                            employee.fatherName,
+                            formattedDob,
+                            employee.gender,
+                            employee.salary,
+                            employee.country,                 
+                ];
+
+                cells.forEach((cellText, index) => {
+                    const cell = document.createElement("td");
+                    cell.textContent = cellText;
+                    row.appendChild(cell);
+
+                    if (index === cells.length - 1) {
+                        const actionsCell = document.createElement("td");
+
+                        // Create edit and delete icons
+                        const eyeIcon = createEyeIcon();
+                        const editIcon = createEditIcon();
+                        const deleteIcon = createDeleteIcon();
+
+                        eyeIcon.style.marginRight = "5px";
+                        editIcon.style.marginRight = "5px";
+
+                        eyeIcon.addEventListener("click", (e) => {
+                            e.preventDefault(); 
+                            window.location.href = nameLink.href;
+                        });
+
+                        actionsCell.appendChild(eyeIcon);
+                        actionsCell.appendChild(editIcon);
+                        actionsCell.appendChild(deleteIcon);
+
+                        row.appendChild(actionsCell);
+
+                        eyeIcons.push(eyeIcon);
+                        editIcons.push(editIcon);
+                        deleteIcons.push(deleteIcon);
+
+                        row.dataset._id = employee._id;                                                      
+                    } else {
+                        row.appendChild(cell);
+                    }
+                });
+
+                table.appendChild(row);
+            });
+
+            // Append the table to the row container
+            rowContainer.appendChild(table);
+
+            // Append the header and rows container to the content area
+            content.appendChild(headerContainer);
+            content.appendChild(rowContainer);
+
+            let writer = {};
+
+
+            editIcons.forEach(editIcon => {
+                            editIcon.addEventListener("click", function () {
+                                console.log("Edit icon clicked"); 
+                                const row = editIcon.closest("tr");
+                                const _id = row.dataset._id;
+                                console.log("_id id",_id);
+                                
+                                fetch(`/api/get-employee-details-by-id?id=${_id}`)
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        console.log("data:",data);
+                                        const dob = new Date(data.dob);
+                                        const year = dob.getFullYear();
+                                        const month = (dob.getMonth() + 1).toString().padStart(2, '0');
+                                        const day = dob.getDate().toString().padStart(2, '0');
+                                        const formattedDob = `${year}-${month}-${day}`;
+                                       const { employeeName,fatherName,gender,id,languages,salary,country} = data; 
+                                       //console.log(formattedDob);
+                                const employee = {
+                                    employeeName: row.cells[1].textContent,
+                                    id: row.cells[2].textContent,
+                                    fatherName: row.cells[3].textContent,
+                                    dob: formattedDob,                                    
+                                    gender: row.cells[5].textContent,
+                                    salary: row.cells[6].textContent,
+                                    country: row.cells[7].textContent, 
+                                    languages : languages ,
+                                    _id : _id,
+                                };
+                                console.log("employee",employee);
+                                // Handle the edit action by opening the modal
+                                    displayEditForm(employee);
+                                });
+                            });
+                        });
+
+                      
+            deleteIcons.forEach(deleteIcon => {
+                deleteIcon.addEventListener("click", function () {
+                    console.log("delete icon clicked"); 
+                    const row = deleteIcon.closest("tr");
+                    const _id = row.dataset._id;
+                    console.log("_id id",_id);
+
+                    const confirmDelete = confirm("Are you sure you want to delete this Employee?");
+                    if (confirmDelete) {
+                        fetch(`/delete-employee/${_id}`, {
+                            method: "DELETE",
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert("Employee deleted successfully");
+                                fetchAndDisplayEmployeeDetails();
+                            } else {
+                                alert("Failed to delete Employee");
+                                fetchAndDisplayEmployeeDetails();
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error:", error);
+                            alert("An error occurred while deleting Employee");
+                        });
+                    }
+                });
+            })
+                .catch(error => {
+                    console.error("Error fetching Employee details:", error);
+                }); 
+
+
+            const prevPageButton = document.getElementById("prev-page");
+                const nextPageButton = document.getElementById("next-page");
+
+                prevPageButton.addEventListener("click", function () {
+                    if (currentPage > 1) {
+                        currentPage--;
+                        displayFilteredWriterDetails(filteredData);
+                    }
+                });
+
+                nextPageButton.addEventListener("click", function () {
+                    if (currentPage < totalPages) {
+                        currentPage++;
+                        displayFilteredWriterDetails(filteredData);
+                    }
+                });       
+        }
+
+//--------------------------- Function to fetch and display writer details-----------------------------------------------
+        
+        function fetchAndDisplayEmployeeDetails() {
+            //console.log("fetchAndDisplayWriterDetails called");
+            fetch("/get-employee-details") // Replace with the actual URL
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    
+                    // Clear the content area
+                    content.innerHTML = "";
+                    
+                    const rowsPerPage = 7;                              
+
+                    totalPages = Math.ceil(data.length / rowsPerPage);
+
+                     // Update the pagination controls
+                    paginationContainer.innerHTML = `
+                        <button id="prev-page" ${currentPage === 1 ? 'disabled' : ''}>Previous</button>
+                        <span>Page ${currentPage} of ${totalPages}</span>
+                        <button id="next-page" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>
+                    `;
+
+                     // Create a table to display writer details
+                    const table = document.createElement("table");
+                    table.classList.add("employee-table");
+
+                    // Create table headers
+                    const headers = ["SI No", "Name", "Employee ID", "Father's Name", "DOB", "Gender", "Salary", "Country", "Actions"];
+                    const headerRow = document.createElement("tr");
+                    headers.forEach(headerText => {
+                        const headerCell = document.createElement("th");
+                        headerCell.textContent = headerText;
+                        headerRow.appendChild(headerCell);
+                    });
+                    table.appendChild(headerRow);
+
+                    // Create a container for the header
+                    const headerContainer = document.createElement("div");
+                    headerContainer.classList.add("header-container");
+                    headerContainer.appendChild(table);
+
+                    // Create a table for the row data
+                    const dataTable = document.createElement("table");
+                    dataTable.classList.add("data-table");                   
+                            
+                    // Calculate the start and end indexes for the current page
+                    const startIndex = (currentPage - 1) * rowsPerPage;
+                    const endIndex = startIndex + rowsPerPage;
+                    
+                    // Slice the data for the current page
+                    const pageData = data.slice(startIndex, endIndex); 
+                    
+                    const calculateSINo = (index) => {
+                        return startIndex + index + 1; // Add 1 to start from 1 instead of 0
+                    };
+                    
+            //Iterate through customer data and create containers for each row
+                pageData.forEach((employee, index) => {  
+                    console.log("Inside loop for employee:", employee);                   
+
+                    const row = document.createElement("tr");
+
+                    const siNoCell = document.createElement("td");
+                    siNoCell.textContent = calculateSINo(index);
+                    row.appendChild(siNoCell);
+
+                    const dob = new Date(employee.dob);
+                const year = dob.getFullYear();
+                const month = (dob.getMonth() + 1).toString().padStart(2, '0');
+                const day = dob.getDate().toString().padStart(2, '0');
+                const formattedDob = `${year}-${month}-${day}`;
+
+                    const nameCell = document.createElement("td");
+                    //nameCell.textContent = writer.name;
+                    const nameLink = document.createElement("a");
+                    nameLink.href = `writer_details.html?id=${employee.writer_id}`; 
+                    nameLink.style.textDecoration = "none";
+                    nameLink.textContent = employee.employeeName;
+                    
+                    nameCell.appendChild(nameLink);
+                    row.appendChild(nameCell);
+
+                    nameLink.addEventListener("click", (e) => {
+                        e.preventDefault(); // Prevent the default link behavior
+                        // Navigate to the writer_details page with the specific writer's data
+                        window.location.href = nameLink.href;
+                    });
+
+                        const cells = [
+                            // writer.name,
+                            employee.id,
+                            employee.fatherName,
+                            formattedDob,
+                            employee.gender,
+                            employee.salary,
+                            employee.country,
+                            //writer.user_id,                            
+                        ];
+                        cells.forEach((cellText, index) => {
+                            const cell = document.createElement("td");
+                            cell.textContent = cellText;
+                            row.appendChild(cell); 
+
+                            if (index === cells.length -1) {
+                                const actionsCell = document.createElement("td");
+
+                                // Create eye, edit and delete icons
+                                const eyeIcon = createEyeIcon();
+                                const editIcon = createEditIcon();
+                                const deleteIcon = createDeleteIcon();                                
+
+                                eyeIcon.style.marginRight = "5px";
+                                editIcon.style.marginRight = "5px";
+
+                                eyeIcon.addEventListener("click", (e) => {
+                                    e.preventDefault(); 
+                                    //console.log("eye icon clicked");
+                                    window.location.href = nameLink.href;
+                                });
+
+                                actionsCell.appendChild(eyeIcon);
+                                actionsCell.appendChild(editIcon);
+                                actionsCell.appendChild(deleteIcon);
+
+                                row.appendChild(actionsCell);
+
+                                eyeIcons.push(eyeIcon);
+                                editIcons.push(editIcon);
+                                deleteIcons.push(deleteIcon);  
+                                
+                                row.dataset._id = employee._id;    
+                                // row.dataset.user_id = employee.user_id;                                                         
+                                                     
+                            } else {
+                                row.appendChild(cell);
+                                }                            
+                        });
+
+                        table.appendChild(row);                                    
+                                          
+                        content.appendChild(headerContainer);
+                        content.appendChild(table);          
+                })
+                
+                //let writer = {};
+
+                editIcons.forEach(editIcon => {
+                            editIcon.addEventListener("click", function () {
+                                console.log("Edit icon clicked"); 
+                                const row = editIcon.closest("tr");
+                                const _id = row.dataset._id;
+                                console.log("_id id",_id);
+                                
+                                fetch(`/api/get-employee-details-by-id?id=${_id}`)
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        console.log("data:",data);
+                                        const dob = new Date(data.dob);
+                                        const year = dob.getFullYear();
+                                        const month = (dob.getMonth() + 1).toString().padStart(2, '0');
+                                        const day = dob.getDate().toString().padStart(2, '0');
+                                        const formattedDob = `${year}-${month}-${day}`;
+                                       const { employeeName,fatherName,gender,id,languages,salary,country} = data; 
+                                       //console.log(formattedDob);
+                                const employee = {
+                                    employeeName: row.cells[1].textContent,
+                                    id: row.cells[2].textContent,
+                                    fatherName: row.cells[3].textContent,
+                                    dob: formattedDob,                                    
+                                    gender: row.cells[5].textContent,
+                                    salary: row.cells[6].textContent,
+                                    country: row.cells[7].textContent, 
+                                    languages : languages ,
+                                    _id : _id,
+                                };
+                                console.log("employee",employee);
+                                // Handle the edit action by opening the modal
+                                    displayEditForm(employee);
+                                });
+                            });
+                        });
+
+                deleteIcons.forEach(deleteIcon => {
+                deleteIcon.addEventListener("click", function () {
+                    console.log("delete icon clicked"); 
+                    const row = deleteIcon.closest("tr");
+                    const _id = row.dataset._id;
+                    console.log("_id id",_id);
+
+                    const confirmDelete = confirm("Are you sure you want to delete this Employee?");
+                    if (confirmDelete) {
+                        fetch(`/delete-employee/${_id}`, {
+                            method: "DELETE",
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert("Employee deleted successfully");
+                                fetchAndDisplayEmployeeDetails();
+                            } else {
+                                alert("Failed to delete Employee");
+                                fetchAndDisplayEmployeeDetails();
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error:", error);
+                            alert("An error occurred while deleting Employee");
+                        });
+                    }
+                });
+            });                
+                })
+                .catch(error => {
+                    console.error("Error fetching Employee details:", error);
+                }); 
+             
+        // Add click event listeners to pagination buttons
+        paginationContainer.addEventListener("click", function (event) {
+            if (event.target.id === "prev-page" && currentPage > 1) {
+                currentPage--;
+                fetchAndDisplayEmployeeDetails();
+            } else if (event.target.id === "next-page" && currentPage < totalPages) {
+                currentPage++;
+                console.log("second page called");
+                fetchAndDisplayEmployeeDetails();
+            }
+        }); 
+                      
+        }
+
+            // Function to clear the filter and display all Employee details
+            function clearFilter() {
+                // Fetch and display all Employee details
+                fetchAndDisplayEmployeeDetails();
+            }
+
+
+        // Function to open the modal with Employee data
+        function displayEditForm(employee) {
+            console.log("displayEditForm called"); 
+            console.log("received _id",employee._id);
+            const modal = document.querySelector("#editModal");         
+            modal.style.display = "block";              
+
+    document.querySelector("#editEmployeeForm input[name='employee_id']").value = employee._id;
+    document.querySelector("#editEmployeeForm input[name='employeeName']").value = employee.employeeName;
+    document.querySelector("#editEmployeeForm input[name='id']").value = employee.id;
+    document.querySelector("#editEmployeeForm input[name='fatherName']").value = employee.fatherName;
+    document.querySelector("#editEmployeeForm input[name='dob']").value = employee.dob;
+    document.querySelector("#editEmployeeForm select[name='gender']").value = employee.gender;
+    document.querySelector("#editEmployeeForm input[name='salary']").value = employee.salary;
+    document.querySelector("#editEmployeeForm select[name='country']").value = employee.country;
+
+    const languageCheckboxes = document.querySelectorAll("#editEmployeeForm input[name='languages']");
+    employee.languages.forEach(language => {
+        const checkbox = [...languageCheckboxes].find(checkbox => checkbox.value === language);
+        if (checkbox) {
+            checkbox.checked = true;
+        }
+    });
+            
+    }
+
+    editEmployeeForm.addEventListener("submit", function (event) {
+            event.preventDefault();            
+            console.log("submit button clicked");
+
+            let filterInput = document.getElementById("filter-input");
+            let filterValue = filterInput.value;
+            
+            const employee_id = document.getElementById('employee_id').value;
+            const employeeName = document.getElementById('employeeName').value;
+            const id = document.getElementById('id').value;
+            const fatherName = document.getElementById('fatherName').value;
+            const salary = document.getElementById('salary').value;
+            const dob = document.getElementById('dob').value;
+            const gender = document.getElementById('gender').value;
+            const languages = Array.from(document.querySelectorAll("#editEmployeeForm input[name='languages']:checked")).map(checkbox => checkbox.value);
+            const country = document.getElementById('country').value;
+            
+            fetch("/update-employee-data", {
+                method: "POST",
+                headers:{
+                    'Content-Type':'application/json',
+                 },
+                body: JSON.stringify({ employee_id, employeeName, id, fatherName, salary, dob, gender, languages, country }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // console.log(data);
+                if (data.success) {
+                    alert("Employee data updated successfully");
+                    filterInput.value = ''; 
+                    fetchAndDisplayEmployeeDetails();
+                    // Handle success, e.g., close modal or update UI
+                } else {
+                    alert("Failed to update employee data");
+                    fetchAndDisplayEmployeeDetails();
+                    // Handle failure
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("An error occurred while updating employee data");
+            });
+            closeModal();
+        });
+    
+    
+const addEmployeeButton = document.getElementById("add-employee-button");
+const addModal = document.getElementById("addModal");
+
+addEmployeeButton.addEventListener("click", function () {
+  addModal.style.display = "block";
+});
+
+const closeButton = document.querySelector(".close1");
+closeButton.addEventListener("click", function () {
+  addModal.style.display = "none";
+  form.reset();
+});
+        
+        // Function to close the modal
+        function closeModal() {
+            const editModal = document.querySelector(".editModal");
+            editModal.style.display = "none";
+            //editFormContainer.style.display = "none";
+            document.querySelector(".content").style.display = "block";
+            //content.style.display = "block"; // Show the writer details table           
+        }
+
+        // Add event listener to close button
+        closeBtn.addEventListener("click", closeModal);
+
+            
+        //Initially fetch and display writer details when the page loads
+        fetchAndDisplayEmployeeDetails();
+
+///////////////////------------ Add writer button click event starts (Writer Registration submission)-----------///////////////////////////////
+        
+const form = document.getElementById('employee-registration-form');
+  
+form.addEventListener('submit', function (event) {
+    event.preventDefault(); // Prevent default form submission
+
+    const employeeName = document.getElementById('add-employeeName').value;
+    const id = document.getElementById('add-id').value;
+    const fatherName = document.getElementById('add-fatherName').value;
+    const salary = document.getElementById('add-salary').value;
+    const dob = document.getElementById('add-dob').value;
+    const gender = document.getElementById('add-gender').value;
+
+    const languages = [];
+    const languageCheckboxes = document.getElementsByName('languages');
+    languageCheckboxes.forEach((checkbox) => {
+        if (checkbox.checked) {
+            languages.push(checkbox.value);
+        }
+    });
+    const country = document.getElementById('add-country').value;
+    
+    console.log(employeeName);
+    fetch('/insert-employee-details', {
+      method: 'POST',
+      headers:{
+                  'Content-Type':'application/json',
+                 },
+      body: JSON.stringify({
+        employeeName,
+            id,
+            fatherName,
+            salary,
+            dob,
+            gender,
+            languages,
+            country,
+        }),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+                        alert("Employee data inserted successfully");
+                        window.location.href = '/home'; 
+                        } else {
+                        alert("Failed to insert Employee data");
+                        window.location.href = '/home'; 
+                            }
+      // alert(data); // Display the response from the server
+      form.reset(); // Clear the form
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      alert("An error occurred while inserting Employee data");
+    });
+  }); 
+
+///////////////////--------------- Add Employee button click event ends(Writer Registration submission)---------------///////////////////////////////
+        
+    });
+</script>
+
+</html>
